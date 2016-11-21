@@ -17,6 +17,16 @@ class SongsController < ApplicationController
     end
   end
 
+  def destroy
+    song = Song.find(params.require(:id))
+    song.destroy
+    if song.destroyed?
+      head :no_content
+    else
+      render json: song, serializer: ActiveModel::Serializer::ErrorSerializer, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def create_params
